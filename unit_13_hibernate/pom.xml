@@ -5,27 +5,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.k4rnaj1k</groupId>
-    <artifactId>hibernate</artifactId>
+    <artifactId>unit_13_hibernate</artifactId>
     <version>1.0</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <hibernate.core.version>5.5.4.Final</hibernate.core.version>
+        <postgresql.version>42.2.23</postgresql.version>
     </properties>
 
     <dependencies>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>${hibernate.core.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <version>42.2.23</version>
-        <scope>runtime</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
-
 </project>
