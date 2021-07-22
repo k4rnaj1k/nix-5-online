@@ -42,8 +42,8 @@ public class DBWorker {
         session.persist(author);
 
         Teacher teacher = new Teacher();
-        teacher.setName("Michail");
-        teacher.setSurname("Surname");
+        teacher.setName("Some");
+        teacher.setSurname("Teacher");
         session.persist(teacher);
 
         Lesson lesson = new Lesson();

@@ -266,7 +266,7 @@ COPY public.students (student_id, name, surname, group_id) FROM stdin;
 --
 
 COPY public.teachers (teacher_id, name, surname) FROM stdin;
-1	Michail	Surname
+1	Some	Teacher
 \.
 
 
