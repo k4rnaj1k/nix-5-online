@@ -2,8 +2,10 @@
 To launch, run ``start.bat``
 or:
  - ``mvn package``
- - ``java -jar unit_13_hibernate.jar``
+ - ``java -jar target/unit_13_hibernate-1.0.jar``
 
-The app can be configured through ``hibernate.cfg.xml``
+or: run ``com.k4rnaj1k.Main``
+
+The app can be configured through ``resources/hibernate.cfg.xml``
 
 Just edit the values as needed.
