@@ -4,24 +4,24 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="lessons")
+@Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long lesson_id;
 
     private Date time;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="group_id")
-    @Access(AccessType.PROPERTY)
-    private Group group;
+    @JoinColumn(name = "group_id")
+    private Group lessons_group;
 
     @OneToOne
     private Theme theme;
 
     @OneToOne
     @Access(AccessType.PROPERTY)
+    @JoinColumn(name="id")
     private Teacher teacher;
 
     public Teacher getTeacher() {
@@ -33,8 +33,8 @@ public class Lesson {
         teacher.addLesson(this);
     }
 
-    public Long getId() {
-        return id;
+    public Long getLesson_id() {
+        return lesson_id;
     }
 
 
@@ -46,13 +46,13 @@ public class Lesson {
         this.time = time;
     }
 
-    public Group getGroup() {
-        return group;
+    public Group getLessons_group() {
+        return lessons_group;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
-        group.addLesson(this);
+    public void setLessons_group(Group lessons_group) {
+        this.lessons_group = lessons_group;
+        lessons_group.addLesson(this);
     }
 
     public Theme getTheme() {
@@ -61,14 +61,16 @@ public class Lesson {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
+        theme.addLesson(this);
     }
+
 
     @Override
     public String toString() {
         return "Lesson{" +
-                "id=" + id +
+                "id=" + lesson_id +
                 ", time=" + time +
-                ", {group=" + group.getGroup_name() + ", group_id="+ group.getGroup_id() +
+                ", {group=" + lessons_group.getGroup_name() + ", group_id="+ lessons_group.getGroup_id() +
                 "}, theme=" + theme +
                 ", teacher=" + teacher +
                 '}';

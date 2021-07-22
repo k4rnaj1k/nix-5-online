@@ -20,7 +20,7 @@ public class Student {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-    @OneToMany
+    @OneToMany(mappedBy = "student")
     private List<Grade> grades = new ArrayList<>();
 
     public List<Grade> getGrades() {
@@ -57,9 +57,10 @@ public class Student {
 
     public void setGroup(Group group) {
         this.group = group;
+        group.addStudent(this);
     }
 
     public List<Lesson> getLessons() {
-        return group.getLessons();
+        return group.getLessonsList();
     }
 }

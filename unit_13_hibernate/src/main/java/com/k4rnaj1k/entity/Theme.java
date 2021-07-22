@@ -14,6 +14,7 @@ public class Theme {
     private String name;
 
     @OneToMany
+    @JoinColumn(name="id")
     private List<Lesson> lessons = new ArrayList<>();
 
     public String getName() {
@@ -34,7 +35,6 @@ public class Theme {
 
     public void addLesson(Lesson lesson){
         this.lessons.add(lesson);
-        lesson.setTheme(this);
     }
 
     public Long getId() {

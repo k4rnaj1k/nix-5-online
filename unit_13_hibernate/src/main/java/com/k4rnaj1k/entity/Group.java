@@ -23,15 +23,16 @@ public class Group {
     private Course course;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Lesson> lessons = new ArrayList<>();
+    @JoinColumn(name="lessons_group")
+    private List<Lesson> lessonsList = new ArrayList<>();
 
 
-    public List<Lesson> getLessons() {
-        return lessons;
+    public List<Lesson> getLessonsList() {
+        return lessonsList;
     }
 
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setLessonsList(List<Lesson> lessonsList) {
+        this.lessonsList = lessonsList;
     }
 
     public Long getGroup_id() {
@@ -60,15 +61,15 @@ public class Group {
 
     public void setCourse(Course course) {
         this.course = course;
+        course.addGroup(this);
     }
 
     public void addStudent(Student student){
         this.students.add(student);
-        student.setGroup(this);
     }
 
     public void addLesson(Lesson lesson) {
-        this.lessons.add(lesson);
+        this.lessonsList.add(lesson);
     }
 
 }

@@ -9,21 +9,22 @@ import java.util.List;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long teacher_id;
 
     private String name;
 
     private String surname;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="teacher")
     private List<Lesson> lessons = new ArrayList<>();
 
     public Long getId() {
-        return id;
+        return teacher_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long teacher_id) {
+        this.teacher_id = teacher_id;
     }
 
     public String getName() {
@@ -57,7 +58,7 @@ public class Teacher {
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
+                "id=" + teacher_id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 '}';

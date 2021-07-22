@@ -1,6 +1,7 @@
 package com.k4rnaj1k.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name="courses")
@@ -11,10 +12,10 @@ public class Course {
     private Long course_id;
 
     @Column(name="course_name")
-    private String courseName;
+    private String course_name;
 
     @OneToMany(mappedBy = "course")
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<>();
 
     public Long getCourse_id() {
         return course_id;
@@ -24,12 +25,12 @@ public class Course {
         this.course_id = course_id;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCourse_name() {
+        return course_name;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
     }
 
     public List<Group> getGroups() {
@@ -42,6 +43,5 @@ public class Course {
 
     public void addGroup(Group group){
         this.groups.add(group);
-        group.setCourse(this);
     }
 }
