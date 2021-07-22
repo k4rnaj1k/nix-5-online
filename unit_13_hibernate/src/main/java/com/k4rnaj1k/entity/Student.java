@@ -9,7 +9,7 @@ import java.util.List;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long student_id;
 
     @Column(nullable = false)
     private String name;
@@ -18,6 +18,7 @@ public class Student {
     private String surname;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="group_id")
     private Group group;
 
     @OneToMany(mappedBy = "student")
@@ -31,8 +32,8 @@ public class Student {
         this.grades = grades;
     }
 
-    public Long getId() {
-        return id;
+    public Long getStudent_id() {
+        return student_id;
     }
 
     public String getName() {

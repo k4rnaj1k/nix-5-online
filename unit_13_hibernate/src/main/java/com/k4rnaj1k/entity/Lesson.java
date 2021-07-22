@@ -16,12 +16,13 @@ public class Lesson {
     @JoinColumn(name = "group_id")
     private Group lessons_group;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
     private Theme theme;
 
     @OneToOne
     @Access(AccessType.PROPERTY)
-    @JoinColumn(name="id")
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     public Teacher getTeacher() {
@@ -70,7 +71,7 @@ public class Lesson {
         return "Lesson{" +
                 "id=" + lesson_id +
                 ", time=" + time +
-                ", {group=" + lessons_group.getGroup_name() + ", group_id="+ lessons_group.getGroup_id() +
+                ", {group=" + lessons_group.getGroup_name() + ", group_id=" + lessons_group.getGroup_id() +
                 "}, theme=" + theme +
                 ", teacher=" + teacher +
                 '}';

@@ -4,9 +4,7 @@ import com.k4rnaj1k.entity.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class DBWorker {
 
@@ -26,11 +24,22 @@ public class DBWorker {
         group.setCourse(course);
         session.persist(group);
 
+        Group group2 = new Group();
+        group2.setGroup_name("nix 6 online");
+        group2.setCourse(course);
+        session.persist(group2);
+
         Student student = new Student();
-        student.setName("Vlad");
-        student.setSurname("Liasota");
-        student.setGroup(group);
+        student.setName("Some");
+        student.setSurname("Student");
+        student.setGroup(group2);
         session.persist(student);
+
+        Student author = new Student();
+        author.setName("Vlad");
+        author.setSurname("Liasota");
+        author.setGroup(group);
+        session.persist(author);
 
         Teacher teacher = new Teacher();
         teacher.setName("Michail");
@@ -43,15 +52,28 @@ public class DBWorker {
         lesson.setTime(new Date());
         session.persist(lesson);
 
+        Lesson lesson2 = new Lesson();
+        lesson2.setTeacher(teacher);
+        lesson2.setLessons_group(group2);
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DATE, 27);
+        lesson2.setTime(calendar.getTime());
+        session.persist(lesson2);
+
 
         Theme theme = new Theme();
         theme.setName("jpa/jdbc");
-        lesson.setTheme(theme);
         session.persist(theme);
+        lesson.setTheme(theme);
+
+        Theme theme2 = new Theme();
+        theme2.setName("reflection");
+        lesson2.setTheme(theme2);
+        session.persist(theme2);
 
         Grade grade = new Grade();
         grade.setLesson(lesson);
-        grade.setStudent(student);
+        grade.setStudent(author);
         grade.setGrade(((byte) 10));
         session.persist(grade);
     }
@@ -64,10 +86,10 @@ public class DBWorker {
     public void printStudents() {
         List<Student> students = getStudents();
         System.out.println("Current students list:");
-        System.out.println("id\tname\tsurname");
+        System.out.println("id\tname\tsurname\t\tgroup");
         for (Student s :
                 students) {
-            System.out.println(s.getId() + "|\t" + s.getName() + "|\t" + s.getSurname());
+            System.out.println(s.getStudent_id() + "|\t" + s.getName() + "|\t" + s.getSurname()+"|\t"+s.getGroup().getGroup_name());
         }
     }
 
@@ -82,7 +104,7 @@ public class DBWorker {
             }
         }
         if (student != null) {
-            System.out.println("Closest lesson for student " + name + " " + surname + " " + student.getId());
+            System.out.println("Closest lesson for student " + name + " " + surname + " " + student.getStudent_id());
             System.out.println(student.getLessons().stream().sorted(Comparator.comparing(Lesson::getTime)).toList().get(0));
         } else {
             System.out.println("Couldn't find student in db, please try again.");

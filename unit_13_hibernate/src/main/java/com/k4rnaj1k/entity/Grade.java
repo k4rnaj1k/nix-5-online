@@ -7,18 +7,20 @@ import javax.persistence.*;
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long grade_id;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
     @ManyToOne
+    @JoinColumn(name = "student_id")
     private Student student;
 
     private Byte grade;
 
-    public Long getId() {
-        return id;
+    public Long getGrade_id() {
+        return grade_id;
     }
 
     public Lesson getLesson() {

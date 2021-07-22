@@ -9,12 +9,11 @@ import java.util.List;
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long theme_id;
 
     private String name;
 
-    @OneToMany
-    @JoinColumn(name="id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lesson_id")
     private List<Lesson> lessons = new ArrayList<>();
 
     public String getName() {
@@ -37,14 +36,14 @@ public class Theme {
         this.lessons.add(lesson);
     }
 
-    public Long getId() {
-        return id;
+    public Long getTheme_id() {
+        return theme_id;
     }
 
     @Override
     public String toString() {
         return "Theme{" +
-                "id=" + id +
+                "id=" + theme_id +
                 ", name='" + name + '\'' +
                 '}';
     }
