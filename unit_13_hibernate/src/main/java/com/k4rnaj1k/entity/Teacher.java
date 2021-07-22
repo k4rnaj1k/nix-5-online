@@ -16,7 +16,7 @@ public class Teacher {
     private String surname;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="teacher")
+    @JoinColumn(name="teacher_id")
     private List<Lesson> lessons = new ArrayList<>();
 
     public Long getId() {

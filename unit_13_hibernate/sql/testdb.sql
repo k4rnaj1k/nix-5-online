@@ -111,7 +111,6 @@ CREATE TABLE public.lessons (
     group_id bigint,
     teacher_id bigint,
     theme_id bigint,
-    teacher bigint,
     lessons_group bigint
 );
 
@@ -245,9 +244,9 @@ COPY public.groups (group_id, group_name, course_id) FROM stdin;
 -- Data for Name: lessons; Type: TABLE DATA; Schema: public; Owner: test
 --
 
-COPY public.lessons (lesson_id, "time", group_id, teacher_id, theme_id, teacher, lessons_group) FROM stdin;
-1	2021-07-22 18:44:41.045	1	1	1	1	1
-2	2021-07-27 18:44:41.051	2	1	2	1	2
+COPY public.lessons (lesson_id, "time", group_id, teacher_id, theme_id, lessons_group) FROM stdin;
+1	2021-07-22 22:43:56.355	1	1	1	1
+2	2021-07-27 22:43:56.361	2	1	2	2
 \.
 
 
@@ -406,7 +405,7 @@ ALTER TABLE ONLY public.lessons
 --
 
 ALTER TABLE ONLY public.lessons
-    ADD CONSTRAINT fk$lesson_teacher FOREIGN KEY (teacher) REFERENCES public.teachers(teacher_id);
+    ADD CONSTRAINT fk$lesson_teacher FOREIGN KEY (teacher_id) REFERENCES public.teachers(teacher_id);
 
 
 --

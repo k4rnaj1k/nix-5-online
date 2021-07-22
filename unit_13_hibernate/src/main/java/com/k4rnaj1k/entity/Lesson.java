@@ -20,9 +20,9 @@ public class Lesson {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    @OneToOne
+    @ManyToOne
     @Access(AccessType.PROPERTY)
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name= "teacher_id")
     private Teacher teacher;
 
     public Teacher getTeacher() {

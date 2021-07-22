@@ -28,8 +28,9 @@ public class Main {
                     session.getTransaction().commit();
                 }
                 dbWorker.printStudents();
-                System.out.println("Please input the name and the surname of the needed student.");
+                System.out.println("Please input the name of the needed student.");
                 String name = s.nextLine();
+                System.out.println("Now enter the surname.");
                 String surname = s.nextLine();
                 logger.warn("Searching for student " + name + " " + surname + ".");
                 dbWorker.getStudent(name, surname);
