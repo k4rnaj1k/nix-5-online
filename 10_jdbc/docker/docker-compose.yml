@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  app:
+    image: 'k4rnaj1k/unit_10_jdbc:latest'
+    build:
+      context: .
+    container_name: unit_10_app
+    depends_on:
+          db:
+            condition: service_healthy
+
+          
+  db:
+    image: 'postgres:alpine'
+    container_name: unit_10_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+    volumes:
+      - ./sql/unit_10.sql:/docker-entrypoint-initdb.d/unit_10.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:5.4
+    container_name: unit_10_webview
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
