@@ -18,7 +18,7 @@ public class Main {
             Session session = sessionFactory.openSession();
             try {
                 DBWorker dbWorker = new DBWorker(session);
-                System.out.println("Initialize database?(y/n)");
+                System.out.println("Initialize database values?(y/n)");
                 if (s.nextLine().toLowerCase().startsWith("y")) {
                     session.beginTransaction();
                     logger.info("Initializing the database with some default values.");
