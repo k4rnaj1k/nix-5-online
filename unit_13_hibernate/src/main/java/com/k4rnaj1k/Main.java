@@ -17,13 +17,13 @@ public class Main {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
             try {
-                DBWorker dbWorker = new DBWorker(session);
+                DBWorker dbWorker = new DBWorker(() -> session);
                 System.out.println("Initialize database values?(y/n)");
                 if (s.nextLine().toLowerCase().startsWith("y")) {
                     session.beginTransaction();
                     logger.info("Initializing the database with some default values.");
                     System.out.println("Initializing db.");
-                    dbWorker.init(session);
+                    dbWorker.init();
                     logger.info("Successfully initialized the db.");
                     session.getTransaction().commit();
                 }

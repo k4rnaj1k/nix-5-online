@@ -5,16 +5,18 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class DBWorker {
 
-    private final Session session;
+    private final Supplier<Session> persistence;
 
-    public DBWorker(Session session) {
-        this.session = session;
+    public DBWorker(Supplier<Session> persistence) {
+        this.persistence = persistence;
     }
 
-    public void init(Session session) {
+    public void init() {
+        Session session = persistence.get();
         Course course = new Course();
         course.setCourse_name("java");
         session.persist(course);
@@ -79,6 +81,7 @@ public class DBWorker {
     }
 
     private List<Student> getStudents() {
+        Session session = persistence.get();
         Query<Student> listStudents = session.createQuery("from Student", Student.class);
         return listStudents.list();
     }
@@ -89,7 +92,7 @@ public class DBWorker {
         System.out.println("id\tname\tsurname\t\tgroup");
         for (Student s :
                 students) {
-            System.out.println(s.getStudent_id() + "|\t" + s.getName() + "|\t" + s.getSurname()+"|\t"+s.getGroup().getGroup_name());
+            System.out.println(s.getStudent_id() + "|\t" + s.getName() + "|\t" + s.getSurname() + "|\t" + s.getGroup().getGroup_name());
         }
     }
 
