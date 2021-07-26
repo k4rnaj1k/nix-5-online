@@ -22,8 +22,7 @@ public class Group {
     @Access(AccessType.PROPERTY)
     private Course course;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="lessons_group")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lessons_group")
     private List<Lesson> lessonsList = new ArrayList<>();
 
 

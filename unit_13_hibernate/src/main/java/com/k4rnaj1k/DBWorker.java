@@ -96,22 +96,21 @@ public class DBWorker {
         }
     }
 
-    public Student getStudent(String name, String surname) {
+    public void getStudentsClosestLesson(Long id) {
         List<Student> students = getStudents();
         Student student = null;
         for (Student s :
                 students) {
-            if (s.getName().equals(name) && s.getSurname().equals(surname)) {
+            if (s.getStudent_id().equals(id)) {
                 student = s;
                 break;
             }
         }
         if (student != null) {
-            System.out.println("Closest lesson for student " + name + " " + surname + " " + student.getStudent_id());
+            System.out.println("Closest lesson for student " + student.getName() + " " + student.getSurname() + " " + student.getStudent_id());
             System.out.println(student.getLessons().stream().sorted(Comparator.comparing(Lesson::getTime)).toList().get(0));
         } else {
             System.out.println("Couldn't find student in db, please try again.");
         }
-        return student;
     }
 }

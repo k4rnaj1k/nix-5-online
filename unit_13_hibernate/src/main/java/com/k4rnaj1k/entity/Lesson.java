@@ -13,7 +13,7 @@ public class Lesson {
     private Date time;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "lessons_group")
     private Group lessons_group;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,7 +22,7 @@ public class Lesson {
 
     @ManyToOne
     @Access(AccessType.PROPERTY)
-    @JoinColumn(name= "teacher_id")
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     public Teacher getTeacher() {
