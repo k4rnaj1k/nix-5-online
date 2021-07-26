@@ -30,7 +30,7 @@ public class Main {
                 dbWorker.printStudents();
                 System.out.println("Please input the id of the needed student.");
                 Long id = Long.parseLong(s.nextLine());
-                logger.warn("Searching for student by id" + id + ".");
+                logger.warn("Searching for student by id " + id + ".");
                 dbWorker.getStudentsClosestLesson(id);
                 logger.info("Successfully found the given student.");
             } catch (HibernateException e) {
