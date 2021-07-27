@@ -8,7 +8,6 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Access(AccessType.PROPERTY)
     private Long course_id;
 
     @Column(name="course_name")

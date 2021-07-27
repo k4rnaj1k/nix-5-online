@@ -19,7 +19,6 @@ public class Group {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    @Access(AccessType.PROPERTY)
     private Course course;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lessons_group")

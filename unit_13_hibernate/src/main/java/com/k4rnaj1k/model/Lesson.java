@@ -21,7 +21,6 @@ public class Lesson {
     private Theme theme;
 
     @ManyToOne
-    @Access(AccessType.PROPERTY)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
