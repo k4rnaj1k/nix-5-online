@@ -3,17 +3,18 @@ package com.k4rnaj1k.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-@Table(name="courses")
+@Table(name = "courses")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long course_id;
 
-    @Column(name="course_name")
+    @Column(name = "course_name")
     private String course_name;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Group> groups = new ArrayList<>();
 
     public Long getCourse_id() {
@@ -40,7 +41,7 @@ public class Course {
         this.groups = groups;
     }
 
-    public void addGroup(Group group){
+    public void addGroup(Group group) {
         this.groups.add(group);
     }
 }

@@ -13,7 +13,7 @@ public class Grade {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private Student student;
 

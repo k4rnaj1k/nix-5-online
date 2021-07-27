@@ -12,11 +12,11 @@ public class Lesson {
 
     private Date time;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "lessons_group")
     private Group lessons_group;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "theme_id")
     private Theme theme;
 

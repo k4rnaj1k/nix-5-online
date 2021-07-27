@@ -17,8 +17,8 @@ public class Student {
     @Column(nullable = false)
     private String surname;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="group_id")
+    @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @OneToMany(mappedBy = "student")

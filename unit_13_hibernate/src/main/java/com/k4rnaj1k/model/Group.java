@@ -14,7 +14,7 @@ public class Group {
     @Column(nullable = false)
     private String group_name;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -62,7 +62,7 @@ public class Group {
         course.addGroup(this);
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         this.students.add(student);
     }
 

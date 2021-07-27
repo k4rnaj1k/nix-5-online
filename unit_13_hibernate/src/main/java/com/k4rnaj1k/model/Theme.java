@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="themes")
+@Table(name = "themes")
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Theme {
         this.lessons = lessons;
     }
 
-    public void addLesson(Lesson lesson){
+    public void addLesson(Lesson lesson) {
         this.lessons.add(lesson);
     }
 
