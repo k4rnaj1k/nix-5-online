@@ -1,6 +1,6 @@
 package com.k4rnaj1k;
 
-import com.k4rnaj1k.entity.*;
+import com.k4rnaj1k.model.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 

@@ -13,13 +13,13 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
 <!--        <property name="hibernate.show_sql">true</property>-->
 <!--        <property name="hibernate.format_sql">true</property>-->
-        <mapping class="com.k4rnaj1k.entity.Course"/>
-        <mapping class="com.k4rnaj1k.entity.Grade"/>
-        <mapping class="com.k4rnaj1k.entity.Group"/>
-        <mapping class="com.k4rnaj1k.entity.Lesson"/>
-        <mapping class="com.k4rnaj1k.entity.Student"/>
-        <mapping class="com.k4rnaj1k.entity.Teacher"/>
-        <mapping class="com.k4rnaj1k.entity.Theme"/>
+        <mapping class="com.k4rnaj1k.model.Course"/>
+        <mapping class="com.k4rnaj1k.model.Grade"/>
+        <mapping class="com.k4rnaj1k.model.Group"/>
+        <mapping class="com.k4rnaj1k.model.Lesson"/>
+        <mapping class="com.k4rnaj1k.model.Student"/>
+        <mapping class="com.k4rnaj1k.model.Teacher"/>
+        <mapping class="com.k4rnaj1k.model.Theme"/>
     </session-factory>
 
 </hibernate-configuration>
