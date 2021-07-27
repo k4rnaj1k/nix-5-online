@@ -7,25 +7,24 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Scanner;
-
-public class Main {
+public class DBInit {
     public static void main(String[] args) {
-        Logger logger = LoggerFactory.getLogger(Main.class);
-        Scanner s = new Scanner(System.in);
+        Logger logger = LoggerFactory.getLogger(DBInit.class);
         Configuration configuration = new Configuration().configure();
+        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
             try {
                 DBWorker dbWorker = new DBWorker(() -> session);
-                System.out.println("Current students list: ");
+                session.beginTransaction();
+                logger.info("Initializing the database with some default values.");
+                System.out.println("Initializing db.");
+                dbWorker.init();
+                logger.info("Successfully initialized the db.");
+                session.getTransaction().commit();
                 dbWorker.printStudents();
-                System.out.println("Please input the id of the needed student.");
-                Long id = Long.parseLong(s.nextLine());
-                logger.warn("Searching for student by id " + id + ".");
-                dbWorker.getStudentsClosestLesson(id);
             } catch (HibernateException e) {
-                logger.error("An exception happenned during the runtime, stopping the app and rolling back.");
+                logger.error("An exception happened during the runtime, stopping the app and rolling back.");
                 logger.error("Exception message: " + e.getMessage());
                 session.getTransaction().rollback();
             } finally {

@@ -4,7 +4,10 @@ import com.k4rnaj1k.model.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class DBWorker {
@@ -97,20 +100,16 @@ public class DBWorker {
     }
 
     public void getStudentsClosestLesson(Long id) {
-        List<Student> students = getStudents();
-        Student student = null;
-        for (Student s :
-                students) {
-            if (s.getStudent_id().equals(id)) {
-                student = s;
-                break;
-            }
-        }
-        if (student != null) {
-            System.out.println("Closest lesson for student " + student.getName() + " " + student.getSurname() + " " + student.getStudent_id());
-            System.out.println(student.getLessons().stream().sorted(Comparator.comparing(Lesson::getTime)).toList().get(0));
+        Session session = persistence.get();
+        Query q = session.createQuery("select l from Lesson l where l.lessons_group = (select s.group from Student s where student_id = " + id + ") order by l.time asc");
+        q.setMaxResults(1);
+        List<Lesson> lessons = q.getResultList();
+        if (lessons.size() > 0) {
+            Lesson lesson = lessons.get(0);
+            System.out.println("Closest lesson for student " + id);
+            System.out.println(lesson);
         } else {
-            System.out.println("Couldn't find student in db, please try again.");
+            System.out.println("Couldn't find any lessons for student in db, please try again.");
         }
     }
 }
