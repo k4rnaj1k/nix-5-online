@@ -27,7 +27,6 @@ public class Main {
             } catch (HibernateException e) {
                 logger.error("An exception happenned during the runtime, stopping the app and rolling back.");
                 logger.error("Exception message: " + e.getMessage());
-                session.getTransaction().rollback();
             } finally {
                 session.close();
             }
