@@ -20,14 +20,12 @@ public class DBInit {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
             try {
-                DBWorker dbWorker = new DBWorker(() -> session);
                 session.beginTransaction();
                 logger.info("Initializing the database with some default values.");
                 System.out.println("Initializing db.");
                 init(session);
                 logger.info("Successfully initialized the db.");
                 session.getTransaction().commit();
-                dbWorker.printStudents();
             } catch (HibernateException e) {
                 logger.error("An exception happened during the runtime, stopping the app and rolling back.");
                 logger.error("Exception message: " + e.getMessage());

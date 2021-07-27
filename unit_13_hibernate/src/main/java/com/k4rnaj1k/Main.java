@@ -18,7 +18,6 @@ public class Main {
             Session session = sessionFactory.openSession();
             try {
                 DBWorker dbWorker = new DBWorker(() -> session);
-                System.out.println("Current students list: ");
                 dbWorker.printStudents();
                 System.out.println("Please input the id of the needed student.");
                 Long id = Long.parseLong(s.nextLine());
