@@ -27,10 +27,6 @@ public class BankingAppController {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
-            Root<User> from = criteriaQuery.from(User.class);
-
             Query<User> query = session.createQuery("from User where email=:email and username=:username and password=:password");
             query.setParameter("email", email)
                     .setParameter("username", username)

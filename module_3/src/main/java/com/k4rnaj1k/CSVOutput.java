@@ -5,9 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -84,7 +81,7 @@ public class CSVOutput {
                     writer.write(set.getString("operation_id") + "," +
                             date + "," +
                             set.getLong("sum") + "," +
-                            set.getString("type")+ "," +
+                            set.getString("type") + "," +
                             set.getString("type_name"));
                     writer.write("\n");
                 }
