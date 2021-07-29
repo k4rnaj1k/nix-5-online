@@ -10,5 +10,5 @@ The app can be configured through ``resources/hibernate.cfg.xml``
 Just edit the values as needed.
 
 
-Also, db can be initialized using ``com.k4rnaj1k.service.DBInit``
+Also, db can be initialized using ``com.k4rnaj1k.DBInit``
 
