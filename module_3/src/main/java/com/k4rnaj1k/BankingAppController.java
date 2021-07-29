@@ -11,9 +11,6 @@ import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Scanner;
 
@@ -46,6 +43,7 @@ public class BankingAppController {
             while (flag) {
                 System.out.println("Would you like to add a new operation?(y/n)");
                 if (s.nextLine().toLowerCase().startsWith("y")) {
+                    loggerInfo.info("Starting the process of operation addition.");
                     addNewOperation(s, currentUser, session);
                 } else {
                     flag = false;
@@ -59,39 +57,71 @@ public class BankingAppController {
             System.out.println("Choose the account to add the operation to.");
             List<Account> userAccounts = user.getAccounts();
             for (int i = 1; i <= userAccounts.size(); i++) {
-                System.out.println(i + " |" + userAccounts.get(i - 1).getName() + "| balance " + userAccounts.get(i-1).getBalance());
+                System.out.println(i + " |" + userAccounts.get(i - 1).getName() + "| balance " + userAccounts.get(i - 1).getBalance());
             }
             int chosenAccountIndex = Integer.parseInt(s.nextLine()) - 1;
             Account account = userAccounts.get(chosenAccountIndex);
+            loggerInfo.info("User has decided to add the operation to account " + account.getName());
 
             System.out.println("""
                     Type of the new operation?
                     1 - income
                     2 - expense""");
-            int choice = Integer.parseInt(s.nextLine());
+            boolean flag = true;
+            var type = OperationCategory.Type.EXPENCE;
+            while (flag) {
+                try {
+                    int choice = Integer.parseInt(s.nextLine());
+                    type = OperationCategory.Type.values()[choice - 1];
+                    flag = false;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong input, try again.");
+                }
+            }
+            loggerInfo.info("User has decided to add an operation with " + type.name() + " type.");
 
-            var type = OperationCategory.Type.values()[choice - 1];
             Query<OperationCategory> q = session.createQuery("from OperationCategory where type=:type");
             q.setParameter("type", type);
             List<OperationCategory> categories = q.getResultList();
 
             for (int i = 1; i <= categories.size(); i++) {
-                System.out.println(i + " " + categories.get(i-1).getType_name());
+                System.out.println(i + " " + categories.get(i - 1).getType_name());
             }
-            int chosenCategory = Integer.parseInt(s.nextLine())-1;
+            int chosenCategory = 1;
+            flag = true;
+            while (flag) {
+                try {
+                    chosenCategory = Integer.parseInt(s.nextLine()) - 1;
+                    if (chosenCategory > categories.size()) {
+                        throw new NumberFormatException();
+                    }
+                    flag = false;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong input, try again.");
+                }
+            }
             System.out.println("Adding operation with category " + categories.get(chosenCategory).getType_name());
+            loggerInfo.info("Adding operation with category " + categories.get(chosenCategory).getType_name());
             System.out.println("Please input the sum.");
+
             session.getTransaction().begin();
             Long sum = Long.parseLong(s.nextLine());
+
+            loggerWarn.warn("Starting the process of operation addition.");
+
             Operation operation = new Operation(categories.get(chosenCategory), sum, account);
             session.persist(operation);
             session.getTransaction().commit();
 
+            loggerInfo.info("Successfully committed changes to the database.");
+
             System.out.println("Successfully committed the transaction to the db.");
             System.out.println("New balance: " + account.getBalance());
+
         } catch (Exception e) {
             System.out.println("There was an error during the operation's addition, aborting.");
             session.getTransaction().rollback();
+            loggerError.error("There was an exception during the operation's addition, rolling back the transaction.");
         }
     }
 }

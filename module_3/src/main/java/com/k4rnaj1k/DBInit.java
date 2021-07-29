@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DBInit {
-    public static void main(String[] args) {
+    public static void init(String email, String username, String password) {
         Logger loggerInfo = LoggerFactory.getLogger("info");
         loggerInfo.info("Some info");
         Configuration configuration = new Configuration().configure();
@@ -32,7 +32,7 @@ public class DBInit {
             session.persist(videoGamesExpense);
 
             //Creating user and 2 of his accounts.
-            var user = new User("k4rnaj1k@email.com", "k4rnaj1k", "k4rnaj1k");
+            var user = new User(email, username, password);
             var account = new Account(100L, "main account", user);
             var internetAccount = new Account(100L, "internet expenses account" , user);
             session.persist(user);
