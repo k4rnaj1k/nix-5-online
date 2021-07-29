@@ -1,4 +1,4 @@
-package com.k4rnaj1k;
+package com.k4rnaj1k.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.k4rnaj1k;
+package com.k4rnaj1k.service;
 
 import com.k4rnaj1k.model.Account;
 import com.k4rnaj1k.model.Operation;
@@ -7,13 +7,10 @@ import com.k4rnaj1k.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DBInit {
     public static void init(String email, String username, String password) {
-        Logger loggerInfo = LoggerFactory.getLogger("info");
-        loggerInfo.info("Some info");
         Configuration configuration = new Configuration().configure();
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
@@ -34,7 +31,7 @@ public class DBInit {
             //Creating user and 2 of his accounts.
             var user = new User(email, username, password);
             var account = new Account(100L, "main account", user);
-            var internetAccount = new Account(100L, "internet expenses account" , user);
+            var internetAccount = new Account(100L, "internet expenses account", user);
             session.persist(user);
             session.persist(account);
             session.persist(internetAccount);
@@ -56,7 +53,8 @@ public class DBInit {
 
             session.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("There was an exception during the database initialization.");
+            LoggerFactory.getLogger("error").error("There was an exception during the database initialization. " + e.getMessage());
         }
     }
 }

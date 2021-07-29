@@ -1,4 +1,4 @@
-package com.k4rnaj1k;
+package com.k4rnaj1k.controller;
 
 import com.k4rnaj1k.model.Account;
 import com.k4rnaj1k.model.Operation;
@@ -24,7 +24,7 @@ public class BankingAppController {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
 
-            Query<User> query = session.createQuery("from User where email=:email and username=:username and password=:password");
+            Query<User> query = session.createQuery("from User where email=:email and username=:username and password=:password", User.class);
             query.setParameter("email", email)
                     .setParameter("username", username)
                     .setParameter("password", password)
@@ -80,7 +80,7 @@ public class BankingAppController {
             }
             loggerInfo.info("User has decided to add an operation with " + type.name() + " type.");
 
-            Query<OperationCategory> q = session.createQuery("from OperationCategory where type=:type");
+            Query<OperationCategory> q = session.createQuery("from OperationCategory where type=:type", OperationCategory.class);
             q.setParameter("type", type);
             List<OperationCategory> categories = q.getResultList();
 

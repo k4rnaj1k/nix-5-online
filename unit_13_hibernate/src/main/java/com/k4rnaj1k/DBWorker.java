@@ -1,12 +1,10 @@
 package com.k4rnaj1k;
 
-import com.k4rnaj1k.model.*;
+import com.k4rnaj1k.model.Lesson;
+import com.k4rnaj1k.model.Student;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -36,7 +34,7 @@ public class DBWorker {
 
     public void getStudentsClosestLesson(Long id) {
         Session session = persistence.get();
-        Query q = session.createQuery("select l from Lesson l where l.lessons_group = (select s.group from Student s where student_id = " + id + ") order by l.time asc");
+        Query<Lesson> q = session.createQuery("select l from Lesson l where l.lessons_group = (select s.group from Student s where student_id = " + id + ") order by l.time asc", Lesson.class);
         q.setMaxResults(1);
         List<Lesson> lessons = q.getResultList();
         if (lessons.size() > 0) {

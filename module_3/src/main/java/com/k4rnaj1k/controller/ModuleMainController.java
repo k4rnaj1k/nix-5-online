@@ -1,5 +1,8 @@
-package com.k4rnaj1k;
+package com.k4rnaj1k.controller;
 
+import com.k4rnaj1k.controller.BankingAppController;
+import com.k4rnaj1k.controller.CSVOutput;
+import com.k4rnaj1k.service.DBInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +57,9 @@ public class ModuleMainController {
     }
 
     private void dbInit() {
+        System.out.println("Initializing the database...");
         DBInit.init(email, username, password);
+        System.out.println("Successfully initialized. Created a user with a username " + username + " 2 accounts, few operations and a few operation categories.");
         loggerInfo.info("Initialized a user with username " + username);
     }
 
@@ -62,5 +67,6 @@ public class ModuleMainController {
         CSVOutput output = new CSVOutput();
         loggerWarn.warn("Starting the process of data export.");
         output.start(email, username, password);
+        System.out.println("Successfully exported the data to file.");
     }
 }
