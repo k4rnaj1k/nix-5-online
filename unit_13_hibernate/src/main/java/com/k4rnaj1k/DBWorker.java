@@ -34,7 +34,8 @@ public class DBWorker {
 
     public void getStudentsClosestLesson(Long id) {
         Session session = persistence.get();
-        Query<Lesson> q = session.createQuery("select l from Lesson l where l.lessons_group = (select s.group from Student s where student_id = " + id + ") order by l.time asc", Lesson.class);
+        Query<Lesson> q = session.createQuery("select l from Lesson l where l.lessons_group = (select s.group from Student s where student_id =:id) order by l.time asc", Lesson.class);
+        q.setParameter("id", id);
         q.setMaxResults(1);
         List<Lesson> lessons = q.getResultList();
         if (lessons.size() > 0) {
