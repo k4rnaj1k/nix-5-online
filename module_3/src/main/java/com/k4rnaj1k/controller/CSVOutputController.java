@@ -37,7 +37,6 @@ public class CSVOutputController {
             long userId = service.searchForUser(conn);
             logger.warn("Retrieving the accounts from the database that belong to the current user.");
             Map<Long, Map.Entry<String, Long>> accounts = service.getAccounts(userId);
-            System.out.println("Please choose the account you'd like to get the statement of.\nOr input * to get the statements of all the accounts.");
             writeToFile(conn, accounts);
             System.out.println("Successfully exported the data to file.");
         } catch (SQLException e) {
@@ -50,6 +49,8 @@ public class CSVOutputController {
         Properties res = new Properties();
         try (InputStream stream = CSVOutputController.class.getClassLoader().getResourceAsStream("app.properties")) {
             res.load(stream);
+            res.setProperty("user", System.getenv("db_user"));
+            res.setProperty("password", System.getenv("db_pass"));
         } catch (IOException e) {
             System.out.println("Couldn't load properties from app.properties.");
             throw new RuntimeException();
@@ -60,6 +61,7 @@ public class CSVOutputController {
     private long chooseAccount(Scanner s, Map<Long, Map.Entry<String, Long>> accounts) {
         Set<Long> accountIds = accounts.keySet();
         NumberFormat n = NumberFormat.getCurrencyInstance(new Locale("uk", "UA"));
+        System.out.println("Please choose the account you'd like to get the statement of.\nOr input * to get the statements of all the accounts.");
         for (Long accountId :
                 accountIds) {
             String accountName = accounts.get(accountId).getKey();

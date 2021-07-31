@@ -22,6 +22,8 @@ public class BankingAppController {
 
     public void start(String email, String username, String password) {
         Configuration configuration = new Configuration().configure();
+        configuration.setProperty("hibernate.connection.user", System.getenv("db_user"));
+        configuration.setProperty("hibernate.connection.password", System.getenv("db_pass"));
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
             service = new BankingAppService(session);
@@ -73,7 +75,7 @@ public class BankingAppController {
             System.out.println("Adding operation with category " + chosenCategory.getCategoryName());
             logger.info("Adding operation with category " + chosenCategory.getCategoryName());
             System.out.println("Please input the sum.");
-            Long sum = Long.parseLong(s.nextLine().replace(".", "")) * 100;
+            Long sum = inputSum(s);
             logger.warn("Starting the process of operation addition.");
 
             service.addOperation(chosenCategory, sum, account);
@@ -85,6 +87,23 @@ public class BankingAppController {
         } catch (Exception e) {
             System.out.println("There was an error during the operation's addition, aborting.");
             logger.error("There was an exception during the operation's addition, rolling back the transaction.");
+        }
+    }
+
+    private Long inputSum(Scanner s) {
+        while (true) {
+            try {
+                String input = s.nextLine();
+                long sum;
+                if (input.contains(".")) {
+                    sum = Long.parseLong(input.replace(".", ""));
+                } else {
+                    sum = Long.parseLong(input) * 100;
+                }
+                return sum;
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong input, try again.");
+            }
         }
     }
 
@@ -103,6 +122,7 @@ public class BankingAppController {
     }
 
     private Account chooseAccount(User user, Scanner s) {
+        printAccounts(user);
         List<Account> userAccounts = user.getAccounts();
         int chosenAccountIndex;
         while (true) {
