@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long id;
 
     @Column(unique = true)
     private String email;
@@ -22,7 +22,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Account> accounts = new ArrayList<>();
 
-    public User(){}
+    public User() {
+    }
 
     public User(String email, String username, String password) {
         this.email = email;
@@ -30,12 +31,12 @@ public class User {
         this.password = password;
     }
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         this.accounts.add(account);
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {

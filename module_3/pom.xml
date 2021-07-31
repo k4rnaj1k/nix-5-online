@@ -22,16 +22,12 @@
             </activation>
             <properties>
                 <log.info>logs/local_info.log</log.info>
-                <log.warn>logs/local_warn.log</log.warn>
-                <log.error>logs/local_error.log</log.error>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <log.info>logs/prod_info.log</log.info>
-                <log.warn>logs/prod_warn.log</log.warn>
-                <log.error>logs/prod_error.log</log.error>
             </properties>
         </profile>
     </profiles>
@@ -77,6 +73,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.23</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

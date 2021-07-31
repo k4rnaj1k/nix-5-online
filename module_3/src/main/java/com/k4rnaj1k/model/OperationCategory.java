@@ -17,19 +17,21 @@ public class OperationCategory {
 
     public enum Type {
         INCOME,
-        EXPENCE;
+        EXPENCE
     }
 
-    private String type_name;
+    @Column(name = "category_name")
+    private String categoryName;
 
     @OneToMany(mappedBy = "category")
     private List<Operation> operations = new ArrayList<>();
 
-    public OperationCategory(){}
+    public OperationCategory() {
+    }
 
-    public OperationCategory(Type type, String type_name) {
+    public OperationCategory(Type type, String typeName) {
         this.type = type;
-        this.type_name = type_name;
+        this.categoryName = typeName;
     }
 
     public Long getId() {
@@ -44,12 +46,12 @@ public class OperationCategory {
         this.type = type;
     }
 
-    public String getType_name() {
-        return type_name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setType_name(String type_name) {
-        this.type_name = type_name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public List<Operation> getOperations() {

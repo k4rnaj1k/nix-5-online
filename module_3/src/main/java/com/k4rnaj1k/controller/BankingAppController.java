@@ -1,127 +1,147 @@
 package com.k4rnaj1k.controller;
 
 import com.k4rnaj1k.model.Account;
-import com.k4rnaj1k.model.Operation;
 import com.k4rnaj1k.model.OperationCategory;
 import com.k4rnaj1k.model.User;
+import com.k4rnaj1k.service.BankingAppService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class BankingAppController {
-    Logger loggerInfo = LoggerFactory.getLogger("info");
-    Logger loggerWarn = LoggerFactory.getLogger("warn");
-    Logger loggerError = LoggerFactory.getLogger("error");
+    private static final Logger logger = LoggerFactory.getLogger("log");
+    private BankingAppService service;
+
 
     public void start(String email, String username, String password) {
         Configuration configuration = new Configuration().configure();
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             Session session = sessionFactory.openSession();
+            service = new BankingAppService(session);
+            User currentUser = service.getUser(email, username, password);
 
-            Query<User> query = session.createQuery("from User where email=:email and username=:username and password=:password", User.class);
-            query.setParameter("email", email)
-                    .setParameter("username", username)
-                    .setParameter("password", password)
-                    .setMaxResults(1);
-            User currentUser = query.uniqueResult();
             if (currentUser != null) {
-                loggerInfo.info("Successfully logged in.");
+                logger.info("Successfully logged in.");
                 System.out.println("Logged in as " + username);
             } else {
-                loggerError.error("Couldn't log in, stopping the app's execution.");
+                logger.error("Couldn't log in, stopping the app's execution.");
                 System.exit(1);
             }
 
             Scanner s = new Scanner(System.in);
             boolean flag = true;
+            System.out.println("""
+                    What would you like to do?
+                    1 - get the list of all the accounts;
+                    2 - add the operation to the account;
+                    Anything else to return to the previous menu.""");
             while (flag) {
-                System.out.println("Would you like to add a new operation?(y/n)");
-                if (s.nextLine().toLowerCase().startsWith("y")) {
-                    loggerInfo.info("Starting the process of operation addition.");
-                    addNewOperation(s, currentUser, session);
-                } else {
-                    flag = false;
+                System.out.println("What would you like to do next?");
+                switch (s.nextLine()) {
+                    case "1" -> printAccounts(currentUser);
+                    case "2" -> addNewOperation(s, currentUser);
+                    default -> flag = false;
                 }
             }
         }
     }
 
-    private void addNewOperation(Scanner s, User user, Session session) {
+    private void addNewOperation(Scanner s, User user) {
         try {
             System.out.println("Choose the account to add the operation to.");
-            List<Account> userAccounts = user.getAccounts();
-            for (int i = 1; i <= userAccounts.size(); i++) {
-                System.out.println(i + " |" + userAccounts.get(i - 1).getName() + "| balance " + userAccounts.get(i - 1).getBalance());
-            }
-            int chosenAccountIndex = Integer.parseInt(s.nextLine()) - 1;
-            Account account = userAccounts.get(chosenAccountIndex);
-            loggerInfo.info("User has decided to add the operation to account " + account.getName());
+
+            Account account = chooseAccount(user, s);
+            logger.info("User has decided to add the operation to account " + account.getName());
 
             System.out.println("""
                     Type of the new operation?
                     1 - income
                     2 - expense""");
-            boolean flag = true;
-            var type = OperationCategory.Type.EXPENCE;
-            while (flag) {
-                try {
-                    int choice = Integer.parseInt(s.nextLine());
-                    type = OperationCategory.Type.values()[choice - 1];
-                    flag = false;
-                } catch (NumberFormatException e) {
-                    System.out.println("Wrong input, try again.");
-                }
-            }
-            loggerInfo.info("User has decided to add an operation with " + type.name() + " type.");
+            var type = chooseType(s);
 
-            Query<OperationCategory> q = session.createQuery("from OperationCategory where type=:type", OperationCategory.class);
-            q.setParameter("type", type);
-            List<OperationCategory> categories = q.getResultList();
+            logger.info("User has decided to add an operation with " + type.name() + " type.");
 
-            for (int i = 1; i <= categories.size(); i++) {
-                System.out.println(i + " " + categories.get(i - 1).getType_name());
-            }
-            int chosenCategory = 1;
-            flag = true;
-            while (flag) {
-                try {
-                    chosenCategory = Integer.parseInt(s.nextLine()) - 1;
-                    if (chosenCategory > categories.size()) {
-                        throw new NumberFormatException();
-                    }
-                    flag = false;
-                } catch (NumberFormatException e) {
-                    System.out.println("Wrong input, try again.");
-                }
-            }
-            System.out.println("Adding operation with category " + categories.get(chosenCategory).getType_name());
-            loggerInfo.info("Adding operation with category " + categories.get(chosenCategory).getType_name());
+            OperationCategory chosenCategory = chooseCategory(s, type);
+
+            System.out.println("Adding operation with category " + chosenCategory.getCategoryName());
+            logger.info("Adding operation with category " + chosenCategory.getCategoryName());
             System.out.println("Please input the sum.");
+            Long sum = Long.parseLong(s.nextLine().replace(".", "")) * 100;
+            logger.warn("Starting the process of operation addition.");
 
-            session.getTransaction().begin();
-            Long sum = Long.parseLong(s.nextLine());
+            service.addOperation(chosenCategory, sum, account);
 
-            loggerWarn.warn("Starting the process of operation addition.");
-
-            Operation operation = new Operation(categories.get(chosenCategory), sum, account);
-            session.persist(operation);
-            session.getTransaction().commit();
-
-            loggerInfo.info("Successfully committed changes to the database.");
+            logger.info("Successfully committed changes to the database.");
 
             System.out.println("Successfully committed the transaction to the db.");
-            System.out.println("New balance: " + account.getBalance());
-
+            System.out.println("New balance: " + formatBalance(account.getBalance()));
         } catch (Exception e) {
             System.out.println("There was an error during the operation's addition, aborting.");
-            session.getTransaction().rollback();
-            loggerError.error("There was an exception during the operation's addition, rolling back the transaction.");
+            logger.error("There was an exception during the operation's addition, rolling back the transaction.");
+        }
+    }
+
+    private void printAccounts(User user) {
+        List<Account> userAccounts = user.getAccounts();
+        for (int i = 1; i <= userAccounts.size(); i++) {
+            long balance = userAccounts.get(i - 1).getBalance();
+            System.out.println(i + " |" + userAccounts.get(i - 1).getName() + "\t|balance| " + formatBalance(balance));
+        }
+    }
+
+    private static final NumberFormat n = NumberFormat.getCurrencyInstance(new Locale("uk", "UA"));
+
+    private String formatBalance(long balance) {
+        return n.format(balance / 100.0);
+    }
+
+    private Account chooseAccount(User user, Scanner s) {
+        List<Account> userAccounts = user.getAccounts();
+        int chosenAccountIndex;
+        while (true) {
+            try {
+                chosenAccountIndex = Integer.parseInt(s.nextLine()) - 1;
+                return userAccounts.get(chosenAccountIndex);
+            } catch (NumberFormatException e) {
+                System.out.println();
+            }
+        }
+
+    }
+
+    private OperationCategory.Type chooseType(Scanner s) {
+        OperationCategory.Type type;
+        while (true) {
+            try {
+                int choice = Integer.parseInt(s.nextLine()) - 1;
+                return OperationCategory.Type.values()[choice];
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong input, try again.");
+            }
+        }
+    }
+
+    private OperationCategory chooseCategory(Scanner s, OperationCategory.Type type) {
+        List<OperationCategory> categories = service.getOperationCategories(type);
+        System.out.println("Choose the operation's category.");
+        for (int i = 1; i <= categories.size(); i++) {
+            System.out.println(i + " " + categories.get(i - 1).getCategoryName());
+        }
+        int chosenCategory;
+        while (true) {
+            try {
+                chosenCategory = Integer.parseInt(s.nextLine()) - 1;
+                return categories.get(chosenCategory);
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong input, try again.");
+            }
         }
     }
 }

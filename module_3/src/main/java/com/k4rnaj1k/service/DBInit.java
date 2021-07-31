@@ -30,8 +30,8 @@ public class DBInit {
 
             //Creating user and 2 of his accounts.
             var user = new User(email, username, password);
-            var account = new Account(100L, "main account", user);
-            var internetAccount = new Account(100L, "internet expenses account", user);
+            var account = new Account(100_00L, "main account", user);
+            var internetAccount = new Account(100_00L, "internet expenses account", user);
             session.persist(user);
             session.persist(account);
             session.persist(internetAccount);
@@ -39,13 +39,13 @@ public class DBInit {
 
             //Creating 2 operations for each account.
 
-            var operation = new Operation(scholarship, 1200L, account);
-            var operation1 = new Operation(internetPayment, 140L, account);
+            var operation = new Operation(scholarship, 1200_00L, account);
+            var operation1 = new Operation(internetPayment, 140_00L, account);
             session.persist(operation);
             session.persist(operation1);
 
-            var steamPayment = new Operation(videoGamesExpense, 100L, internetAccount);
-            var salaryOperation = new Operation(salary, 1000L, internetAccount);
+            var steamPayment = new Operation(videoGamesExpense, 100_00L, internetAccount);
+            var salaryOperation = new Operation(salary, 1000_00L, internetAccount);
             session.persist(steamPayment);
             session.persist(salaryOperation);
 

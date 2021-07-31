@@ -1,7 +1,5 @@
 package com.k4rnaj1k.controller;
 
-import com.k4rnaj1k.controller.BankingAppController;
-import com.k4rnaj1k.controller.CSVOutput;
 import com.k4rnaj1k.service.DBInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +8,12 @@ import java.util.Scanner;
 
 public class ModuleMainController {
     private String email, username, password;
-    private Logger loggerInfo = LoggerFactory.getLogger("info");
-    private Logger loggerWarn = LoggerFactory.getLogger("warn");
-    private Logger loggerError = LoggerFactory.getLogger("error");
+    private static final Logger logger = LoggerFactory.getLogger("log");
 
     public void start() {
-        loggerInfo.info("Starting app.");
+        logger.info("Starting app.");
 
-        loggerInfo.info("Initializing login fields.");
+        logger.info("Initializing login fields.");
         fieldInit();
 
         Scanner s = new Scanner(System.in);
@@ -40,19 +36,19 @@ public class ModuleMainController {
     }
 
     private void fieldInit() {
-        loggerWarn.warn("Reading user's credentials from environment variables.");
+        logger.warn("Reading user's credentials from environment variables.");
         email = System.getenv("email");
         username = System.getenv("username");
         password = System.getenv("password");
         if (email == null || username == null || password == null) {
-            loggerError.error("Couldn't initialize login fields, please make sure you've set up all the necessary environment variables(email, username, password).");
+            logger.error("Couldn't initialize login fields, please make sure you've set up all the necessary environment variables(email, username, password).");
             throw new RuntimeException();
         }
     }
 
     private void bankLogIn() {
         BankingAppController app = new BankingAppController();
-        loggerInfo.info("The user has decided to log in into his bank account.");
+        logger.info("The user has decided to log in into his bank account.");
         app.start(email, username, password);
     }
 
@@ -60,13 +56,12 @@ public class ModuleMainController {
         System.out.println("Initializing the database...");
         DBInit.init(email, username, password);
         System.out.println("Successfully initialized. Created a user with a username " + username + " 2 accounts, few operations and a few operation categories.");
-        loggerInfo.info("Initialized a user with username " + username);
+        logger.info("Initialized a user with username " + username);
     }
 
-    private void dataExport(){
-        CSVOutput output = new CSVOutput();
-        loggerWarn.warn("Starting the process of data export.");
-        output.start(email, username, password);
-        System.out.println("Successfully exported the data to file.");
+    private void dataExport() {
+        CSVOutputController output = new CSVOutputController(email, username, password);
+        logger.warn("Starting the process of data export.");
+        output.startOutput();
     }
 }

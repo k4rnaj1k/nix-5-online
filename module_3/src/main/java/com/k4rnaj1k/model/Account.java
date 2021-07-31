@@ -10,7 +10,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long account_id;
+    private Long id;
 
     private Long balance;
 
@@ -32,8 +32,8 @@ public class Account {
         this.name = name;
     }
 
-    public Long getAccount_id() {
-        return account_id;
+    public Long getId() {
+        return id;
     }
 
     public Long getBalance() {

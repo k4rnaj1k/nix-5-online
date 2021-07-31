@@ -8,7 +8,7 @@ import java.time.Instant;
 public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long operation_id;
+    private Long id;
 
     private Instant time = Instant.now();
 
