@@ -2,7 +2,7 @@ package com.k4rnaj1k.task1;
 
 import com.k4rnaj1k.Task;
 
-public class Task1 implements Task{
+public class Task1 implements Task {
     public void execute() {
         for (int i = 49; i >= 0; i--) {
             Thread helloThread = new HelloThread(i);

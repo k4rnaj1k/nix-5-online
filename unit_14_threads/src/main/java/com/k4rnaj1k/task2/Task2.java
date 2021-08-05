@@ -7,8 +7,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class Task2 implements Task {
+
+    List<? extends Number> list;
+
+    public Task2(List<? extends Number> list) {
+        this.list = list;
+    }
+
     public void execute() {
-        FutureTask<List<Boolean>> task = new FutureTask<>(new CountThread(List.of(1, 2, 3, 5, 17)));
+        FutureTask<List<Boolean>> task = new FutureTask<>(new CountThread(list));
         try {
             Thread t = new Thread(task);
             t.start();

@@ -7,7 +7,7 @@ public class HelloThread extends Thread {
         this.threadNumber = threadNumber;
     }
 
-    public void run(){
+    public void run() {
         System.out.println("Hello from thread " + threadNumber);
     }
 }

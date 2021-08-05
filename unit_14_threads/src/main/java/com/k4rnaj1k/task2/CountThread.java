@@ -26,7 +26,7 @@ public class CountThread implements Callable<List<Boolean>> {
     }
 
     private boolean isSimple(double num) {
-        if(num==1){
+        if (num == 1) {
             System.out.println(num + " is not simple");
             return false;
         }
@@ -37,7 +37,7 @@ public class CountThread implements Callable<List<Boolean>> {
                 return false;
             }
         }
-        System.out.println(num+ " is simple");
+        System.out.println(num + " is simple");
         return true;
     }
 }
