@@ -21,7 +21,7 @@ public class Horse implements Runnable {
             try {
                 Thread.sleep(r.nextInt(100) + 400);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("An unexpected error has occurred. " + e.getMessage());
             }
         }
         this.winners.add(this.horseNumber);
