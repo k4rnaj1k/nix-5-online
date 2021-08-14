@@ -25,6 +25,6 @@ public class Horse implements Runnable {
             }
         }
         this.winners.add(this.horseNumber);
-        System.out.println(horseNumber + " has finished the run.");
+        System.out.println("Horse number " + horseNumber + " has finished the run.");
     }
 }
