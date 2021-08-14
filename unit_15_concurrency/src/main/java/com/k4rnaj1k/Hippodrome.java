@@ -1,3 +1,5 @@
+package com.k4rnaj1k;
+
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
