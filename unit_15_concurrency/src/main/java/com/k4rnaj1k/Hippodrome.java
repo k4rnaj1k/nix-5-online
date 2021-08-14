@@ -33,5 +33,6 @@ public class Hippodrome {
         } else {
             System.out.println("You have lost.");
         }
+        System.out.println("Your horse has finished " + (winners.indexOf(choice)+1));
     }
 }
