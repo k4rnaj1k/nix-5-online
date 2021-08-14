@@ -25,7 +25,7 @@ public class Hippodrome {
             try {
                 finished = service.awaitTermination(1, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("An unexpected error has occurred. " + e.getMessage());
             }
         }
         if (Objects.equals(winners.get(0), choice)) {
