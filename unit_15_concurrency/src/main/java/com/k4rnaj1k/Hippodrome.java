@@ -8,6 +8,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Hippodrome {
+    public static void main(String[] args) {
+        Hippodrome h = new Hippodrome();
+        h.start();
+    }
+
     public void start() {
         Scanner s = new Scanner(System.in);
         System.out.print("Input your horses number(1-10):\n>");
@@ -16,7 +21,7 @@ public class Hippodrome {
         CopyOnWriteArrayList<Integer> winners = new CopyOnWriteArrayList<>();
         ExecutorService service = Executors.newFixedThreadPool(10);
         for (int i = 1; i <= 10; i++) {
-            service.execute(new Horse(winners, i));
+            service.submit(new Horse(winners, i));
         }
         service.shutdown();
         System.out.println("The race has started.");
