@@ -21,12 +21,16 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.6</version>
-
                 <configuration>
                     <webApp>
                         <contextPath>/servlets</contextPath>
                     </webApp>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
             </plugin>
         </plugins>
     </build>
