@@ -18,6 +18,7 @@ public class UserTableServlet extends HttpServlet {
         Writer writer = resp.getWriter();
         writer.write("<table border=\"1\"><tr><th>IP</th><th>User-Agent</th></tr>");
         String ip = req.getRemoteAddr();
+        log("Received connection request from " + ip);
         users.put(req.getRemoteAddr(), req.getHeader("User-Agent"));
         for (String userIp :
                 users.keySet()) {
@@ -29,7 +30,6 @@ public class UserTableServlet extends HttpServlet {
             }
             writer.write(usersRow);
         }
-        System.out.println(req.getRemoteAddr());
         writer.write("</table>");
     }
 }
