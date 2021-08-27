@@ -1,18 +1,17 @@
 package com.k4rnaj1k;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserTableServlet extends HttpServlet {
-    private final Map<String,String> users = new HashMap<>();
+    private final Map<String,String> users = new ConcurrentHashMap<>();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Writer writer = resp.getWriter();
